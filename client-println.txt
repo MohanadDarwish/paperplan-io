@@ -1,0 +1,378 @@
+#include <ESP8266WiFi.h>
+
+/*Station ssid & password*/
+const char* ssid = "oody";
+const char* password = "26220323";
+
+/*AP ssid & password*/
+const char *Myssid = "Hacker";
+const char *Mypassword = "123456789";
+//print(wifi.sta.getip());
+int led1 = 2;
+int value1 = LOW;
+WiFiServer server(80);
+
+void setup() {
+
+  Serial.begin(9600);
+  delay(10);
+
+
+
+  Serial.println();
+
+
+  WiFi.softAP(Myssid, Mypassword);
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+
+
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+
+  server.begin();
+  Serial.println("Server started");
+  Serial.print("Use this URL to connect: ");
+  Serial.print("http://");
+  Serial.println(WiFi.localIP());
+  Serial.print("The Subnet Mask ");
+  Serial.println(WiFi.subnetMask());
+  Serial.print("The gatewayIP  ");
+  Serial.println(WiFi.gatewayIP());
+  Serial.println("");
+  Serial.println("");
+  Serial.println("");
+  Serial.println("");
+
+}
+
+void loop()
+{
+  /***********************************AP Scaninig***************************/
+  while (Serial.available() > 0)
+  {
+    char Data = Serial.read();
+    if (Data == 'A') {
+      int n = WiFi.scanNetworks();            // Scanning the no. of networks
+      Serial.print("The APs Found!  ... ");
+      Serial.println(n);
+      Serial.println();
+      Serial.println();
+
+      for (int i = 0; i < n; i++)
+      {
+        Serial.print(i);
+        Serial.print(". ");
+        Serial.print(WiFi.SSID(i));
+        Serial.print("  ");
+        Serial.print(" encr. ");
+        Serial.print(WiFi.encryptionType(i));
+        Serial.print("  ");
+        Serial.print(" Signal ");
+        Serial.print(WiFi.RSSI(i));
+        Serial.println(" dbm ");
+        Serial.println();
+      }
+    }
+  }
+
+  /***********************************Server Creation***************************/
+
+  WiFiClient client = server.available();
+  if (!client)
+  {
+    return;
+  }
+
+  Serial.println("new client");
+client.println("<!DOCTYPE html>");
+client.println("<html>");
+client.println("<head>");
+client.println("<meta charset=\"utf-8\">");
+client.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+client.println("<meta name=\"description\" content=\"Welcome to our Agile Driving Assistance website that has all the information about our system and the developing team.\"> ");
+client.println("<title>ADA Main Portal</title>");
+client.println("<link rel=\"stylesheet\" href=\"style.css\">");
+client.println("<script type=\"text/javascript\">");
+client.println(" function login(){window.prompt(username);if( text==\"honda\" && password==\"123456\" ){alert(\"Right credentials !\");}else{alert(\"wrong username or password !!\");}} ");
+client.println("</script>");
+
+client.println("<style> body {margin:0;padding:0;background:#fff;color:#212d47;font-size:20px;font-family:arial;text-align:left; }.header {background:#212D47;color:#f3f9fc;margin:0px;font-size:20px;font-family:Gotham;text-align:center;padding:1px 0; }.navigation {background:#f3f9fc;color:#1b427b;font-size:18px;text-align:center;padding:3px;margin:0px 0; }Ul {list-style:none;font-family:GT Walsheim;padding:4pxmargin:4px }ul li  ");
+client.println("display:inline-block;padding:5px;margin-left:40px;margin-right:40px; }ul li:hover, ul li:focus {color:#0fd5ed; }Ol {background=#fff;color:#212D47;font-family:GT Walsheim;font-size:23px;font-style:italic;text-align:left;padding:10px;margin:10px;margin-left:50px; }ol li {padding:5px;margin-left:40px;margin-right:40px; }ol li:hover, ol li:focus {color:#1b427b;font-size:30px;font-style:bold; } ");
+client.println("ul2 {float:center;margin-left:100px;padding:0px;margin:50px; }ul2 li:hover, ul2 li:focus {color:#058CA3;font-size:20px;font-style:italic;margin:0px; }.team {background:#fff;color:#212D47;font-family:Futura;font-size:18px;font-style:bold;text-align:left;padding:10px;margin:10px;margin-bottom:0px; }.content {background:#fff;color:#212D47;font-family:Futura;font-size:18px;font-style:bold;text-align:left;padding:10px 0;margin:10px; } ");
+client.println(".footer {background:#212D47;color:#f3f9fc;font-size:20px;text-align:center; } ");
+client.println("</style>");
+client.println("</head>");
+client.println("<body>");
+client.println("<div class=\"header\" >");
+client.println("<h1>");
+client.println("Agile Driving Assistance");
+client.println("</h1>");
+client.println("</div>");
+client.println("<div class=\"navigation\">");
+client.println("<ul>");
+client.println("<li onclick=\"location.href = 'http://ada.paperplane.io';\">ADA Main Portal</li>");
+client.println("<li>ADA Team Members</li>");
+client.println("<li onclick=\"location.href = 'login.html';\">Sign In</li>");
+client.println("<li onclick=\"location.href = 'signup.html';\">Sign Up</li>");
+client.println("<li onclick=\"location.href = 'contactus.html';\">Contact Us</li>");
+client.println("<li onclick=\"location.href = 'aboutus.html';\">About Us</li>");
+client.println("</ul>");
+client.println("</div>");
+client.println("<div class=\"team\">");
+client.println("<img src=\"http://www.driveassistapp.com/images/drivelogo.png\" alt=\"404\" style=\"float:left;margin-top:20px;margin-left:100px;margin-right:100px;width:300px;height:240px;\">");
+client.println("<br>");
+
+client.println("<h2 style=\"float:center;margin-left:50px;font-family:GT Walsheim;\"> ");
+client.println("<i>Our Team:</i>");
+client.println("</h2>");
+client.println("<ul2>");
+client.println("<li onclick=\"location.href = 'https://eg.linkedin.com/in/mohanad-darwish';\">Mohanad Darwish</li>");
+client.println("<li onclick=\"location.href = 'https://eg.linkedin.com/in/mohamed-tarek-99478a136';\">Mohamed Tarek</li>");
+client.println("<li onclick=\"location.href = 'https://eg.linkedin.com/in/shefaa-mohamed-92115333';\">Shefaa Ibrahim</li>");
+client.println("<li onclick=\"location.href = 'https://www.linkedin.com/in/mohamed-omar-7938a8107';\">Mohamed Omar</li>");
+client.println("<li onclick=\"location.href = 'https://eg.linkedin.com/in/mervat-elalem-553411135/en';\">Mervat Al-Alem</li>");
+client.println("<li onclick=\"location.href = 'https://eg.linkedin.com/in/nourhanelshaer';\">Nourhan El-Shaer</li>");
+
+client.println("</ul2>");
+client.println("</div>");
+client.println("<br>");
+client.println("<div class=\"content\">");
+client.println("<p>Agile Driving Assistance is a system to be implementedin the car to make it more Agile and smart while driving andto make the driving journey more safe to you and your society.</p>");
+client.println("<img src=\"http://mandetech.com/wp-content/uploads/2015/12/automotive-ADAS.jpg\" alt=\"404\" style=\"float:right;margin-left:margin-right:100px;300px;width:720px;height:330px;\"> ");
+client.println("<p>");
+client.println("<strong style=\"margin-left:20px;font-size:30px;font-family:Futura;\"> ");
+client.println("System features: ");
+client.println("</strong>");
+client.println("<br>");
+client.println("<style>ol{color:#154360}</style>");
+client.println("<ol>");
+client.println("<li>Vechile to X.</li>");
+client.println("<br>");
+client.println("<li>Mirror/Light Control </li>");
+client.println("<br>");
+client.println("<li>Auto-Parking</li>");
+client.println("<br>");
+client.println("<li>Anti-Collision</li>");
+client.println("<br>");
+client.println("<li>Car Follower</li>");
+client.println("</ol>");
+client.println("</p>");
+client.println("</div>");
+client.println("<div class=\"footer\">");
+client.println("Copyright &copy; 2017 All Rights Reserved To Mohanad Darwish");
+client.println("</div>");
+client.println("</body>");
+client.println("</html>");
+
+while(!(Serial.available()))
+  {     };
+  char lol=Serial.read();
+  if(lol=='x')
+  {
+       client.println("</!DOCTYPE html>");
+client.println("</html>");
+client.println("</head>");    
+client.println("</meta charset=\"utf-8\">");
+client.println("</meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+client.println("</meta name=\"description\" content=\"Welcome to our Agile Driving Assistance website that has all the information about our system and the developing team.\"> ");
+client.println("<title>ADA Main Portal</title>");
+client.println("</script type=\"text/javascript\">function login()  {if( username==\"mohanad\" && password==\"123456\"){alert(\"Right credentials !\");}else  {alert(\"wrong username or password !!\");}}");
+client.println("</script>");
+client.println("</style>body{margin:0;padding:0;}.header{background:#212D47;color:#f3f9fc;margin:0px;font-size:20px;font-family:Gotham;text-align:center;padding:1px 0;}.navigation{background:#f3f9fc;color:#1b427b;font-size:18px;text-align:center;padding:3px;margin:0px 0; }ul{list-style:none;font-family:GT Walsheim;padding:4px;margin:4px;}ul li{display:inline-block;padding:5px;margin-left:40px;  margin-right:40px;}ul li:hover, ul li:focus {color:#0fd5ed;}.controlpanel {background:#fff;color:#1b427b;text-align:center;padding:100px;margin-left:380px;margin-right:400px;margin-bottom:50px;margin-top:50px;font-size:30px;text-align:center;margin:0px;padding:0px;}.footer{background:#212D47;color:#f3f9fc;font-size:20px;  text-align:center;}label{margin-left:25px;font-size:25px;color:#212d47;font-family:Georgia;} ");
+client.println("</style>");
+client.println("</head>");
+client.println("</body>");
+client.println("</div class=\"header\" >");
+client.println("</h1>Agile Driving Assistance</h1>");
+client.println("</div>");
+client.println("</div class=\"navigation\">");
+client.println("</ul>");
+client.println("</li onclick=\"location.href = 'http://ada.paperplane.io';\">ADA Main Portal</li>");
+client.println("</li>ADA Team Members</li>");
+client.println("</li onclick=\"location.href = 'login.html';\">Sign In</li>");
+client.println("</li>Sign Up</li>");
+client.println("</li>Contact Us </li>");
+client.println("</li>About Us</li>");
+client.println("</ul>");
+client.println("</div>");
+client.println("</div class=\"controlpanel\">");
+client.println("</i>CONTROL PANEL</i>");
+client.println("</br>");
+client.println("</img src=\"./rc-car.png\" alt=\"404\" >");
+client.println("</br>");
+client.println("</div>");
+client.println("</div class=\"footer\">Copyright &copy; 2017 All Rights Reserved To Mohanad Darwish</div>");
+client.println("</body>");
+client.println("</html>");
+    }  /////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////
+//  client.println("HTTP/1.1 200 OK");
+//  client.println("Content-Type: text/html");
+//  client.println("");
+//  /*For refeshing the page every no. of seconds*/
+//  client.println("<meta http-equiv=\"refresh\" content=\"10\">");
+//  client.println("<!DOCTYPE HTML>");
+//  client.println("<html>");
+//  client.println("<head>");
+//  client.println("<title>Remote Control</title>");
+//  client.println("<meta charset=\"utf-8\">");
+//  client.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+//  client.println("<html xmlns='http://www.w3.org/1999/xhtml'>");
+//  client.println("<link rel=\"stylesheet\" href=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\">");
+//  client.println("<link rel=\"stylesheet\" href=\"http://www.w3schools.com/lib/w3.css\">");
+//  client.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js\"></script>");
+//  client.println("<script src=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js\"></script>");
+//  client.println("</head>");
+//  client.println("<header class=\"w3-container w3-teal\">");
+//  client.println("<h1>Implementation of \"SCADA\" System </h1>");
+//  client.println("</header>");
+//  client.println("<body>");
+//  client.println("<div class=\"container\">");
+//  client.print("<h1>ESP8266 Web Server</h1>");
+//  client.print("<p class=\"text-danger\">Pin1 ON/OFF Buttons:</p>");
+//  client.print("<a href=\"/LED1=ON\" class=\"btn btn-success\" role=\"button\">Pin1 ON</a>");//<a></a>
+//  client.print("<a href=\"/LED1=OFF\" class=\"btn btn-danger\" role=\"button\">Pin1 OFF</a>");
+//
+//  client.print("<p class=\"text-danger\">Pin2 ON/OFF Buttons:</p>");
+//  client.print("<a href=\"/LED2=ON\" class=\"btn btn-success\" role=\"button\">Pin2 ON</a>");
+//  client.print("<a href=\"/LED2=OFF\" class=\"btn btn-danger\" role=\"button\">Pin2 OFF</a>");
+//
+//  client.print("<p class=\"text-danger\">Pin3 ON/OFF Buttons:</p>");
+//  client.print("<a href=\"/LED3=ON\" class=\"btn btn-success\" role=\"button\">Pin3 ON</a>");
+//  client.print("<a href=\"/LED3=OFF\" class=\"btn btn-danger\" role=\"button\">Pin3 OFF</a>");
+//
+//  client.print("<p class=\"text-danger\">Pin4 ON/OFF Buttons:</p>");
+//  client.print("<a href=\"/LED4=ON\" class=\"btn btn-success\" role=\"button\">Pin4 ON</a>");
+//  client.print("<a href=\"/LED4=OFF\" class=\"btn btn-danger\" role=\"button\">Pin4 OFF</a>");
+//
+//  client.print("<br><br>");
+//
+//  client.println("<div class=\"container-fluid\">");
+//  client.println("<h3>Who Am I?</h3>");
+//  client.println("<img src=\"http://www.feistees.com/wp-content/uploads/2014/10/stlbs.jpg\" class=\"img-square\" alt=\"Eagle eye\" width=\"304\" height=\"236\">");
+//  client.println("<h3>I'm The Future</h3>");
+//
+
+  while (!client.available())
+  {
+    delay(1);
+  }
+
+  String request = client.readStringUntil('\r');
+  Serial.println(request);
+  client.flush();
+//
+//  if (request.indexOf("/LED1=ON") > 0) {
+//    digitalWrite(led1, HIGH);
+//    value1 = HIGH; Serial.println("Led 1 is on\n\r");
+//  }
+//
+//  if (request.indexOf("/LED2=ON") > 0) {
+//    digitalWrite(led2, HIGH); Serial.println("Led 2 is on\n\r");
+//    value2 = HIGH;
+//  }
+//
+//  if (request.indexOf("/LED3=ON") > 0) {
+//    digitalWrite(led3, HIGH); Serial.println("Led 3 is on\n\r");
+//    value3 = HIGH;
+//  }
+//  if (request.indexOf("/LED4=ON") > 0) {
+//    digitalWrite(led4, HIGH); Serial.println("Led 4 is on\n\r");
+//    value4 = HIGH;
+//  }
+//  if (request.indexOf("/LED1=OFF") > 0) {
+//    digitalWrite(led1, LOW);
+//    value1 = LOW;
+//  }
+//  if (request.indexOf("/LED2=OFF") > 0) {
+//    digitalWrite(led2, LOW);
+//    value2 = LOW;
+//  }
+//  if (request.indexOf("/LED3=OFF") > 0) {
+//    digitalWrite(led3, LOW);
+//    value3 = LOW;
+//  }
+//  if (request.indexOf("/LED4=OFF") > 0) {
+//    digitalWrite(led4, LOW);
+//    value4 = LOW;
+//  }
+//
+//  client.println("     Pin1 is now: ");
+//  if (value1 == HIGH) {
+//    client.print("On");
+//  } else {
+//    client.print("Off");
+//  }
+//
+//  client.println("     Pin2 is now: ");
+//  if (value2 == HIGH) {
+//    client.print("On");
+//  } else {
+//    client.print("Off");
+//  }
+//  client.print("<br><br>");
+//
+//
+//  client.println("     Pin3 is now: ");
+//  if (value3 == HIGH) {
+//    client.print("On");
+//  } else {
+//    client.print("Off");
+//  }
+//
+//  client.println("     Pin4 is now: ");
+//  if (value4 == HIGH) {
+//    client.print("On");
+//  } else {
+//    client.print("Off");
+//  }
+
+  client.print("<br><br>");
+  client.print("<hr>");
+  client.print("<h2>SENSORS READINGSSSS !</h2>");
+  client.print("<hr>");
+  client.print("<br><br>");
+
+
+  char MotonDetection = digitalRead(5);
+  if (MotonDetection == HIGH)
+  {
+    client.print("Motion Detected____!");
+  }
+  else {
+    client.print("Nooo____Motion Detected ");
+  }
+  client.print("<br><br>");
+  float Temp = analogRead(A0);
+  Temp *= 3.3;
+  Temp /= 1024;
+  client.print("The temperature is ");
+  client.print(Temp);
+  client.print(" celisuis");
+  client.print("<br><br>");
+  client.println("</div>");
+  client.println("</body>");
+
+  client.println("</html>");
+
+  delay(1);
+  Serial.println("Client disonnected");
+  Serial.println("");
+
+}
