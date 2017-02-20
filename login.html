@@ -4,9 +4,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Welcome to our Agile Driving Assistance website that has all the information about our system and the developing team.">
-		<title>ADA Sign In</title>
+		<title>ADA Main Portal</title>
 		
 		<script type="text/javascript">
+		function hello()
+		{
+			alert("hello !");
+		}
 		function test22()
 		{
 			var usr = document.getElementsByName("username")[0].value;	
@@ -64,10 +68,6 @@
 			margin-left:40px;
 			margin-right:40px;
 		}
-		ss:hover, ss:focus
-		{
-			color:#0fd5ed;
-		}
 		ul li:hover, ul li:focus 
 		{
 			color:#0fd5ed;
@@ -104,18 +104,18 @@
 	</head>
 	<body>
 		<div class="header" >
-			<ss style="font-size:17px;float:right;margin-top:6px;margin-right:25px;margin-left:15px;font-family:GT Walsheim;" onclick="location.href = 'signup.html';">Sign Up</ss>
-			<ss style="font-size:17px;float:right;margin-top:6px;margin-right:25px;margin-left:15px;font-family:GT Walsheim;" onclick="location.href = 'login.html';">Sign In</ss>
-			<h1 display:block;margin-left:auto;margin-right:auto;>
-				Agile Driving Assistance (ADA)
+			<h1>
+				Agile Driving Assistance
 			</h1>
 		</div>
 		<div class="navigation">
 			<ul>
-				<li onclick="location.href = 'http://ada.paperplane.io';">Home Portal</li>
-				<li>Team Members</li>
+				<li onclick="location.href = 'http://ada.paperplane.io';">ADA Main Portal</li>
+				<li>ADA Team Members</li>
 				<li onclick="location.href = 'contactus.html';">Contact Us	</li>
 				<li onclick="location.href = 'aboutus.html';">About Us</li>
+				<li onclick="location.href = 'login.html';">Sign In</li>
+				<li onclick="location.href = 'signup.html';">Sign Up</li>
 			</ul>
 		</div>
 		<div class="logincredentails">
@@ -125,12 +125,13 @@
 				<input type="text" value="" name="username" id="usernameid"  maxlength="8"/>
 				<br><br><br>
 				
-				<label style="float:left;" >	Password:	</label> 
-				<input style="float:left;"type="password" value="" name="password" id="passwordid"  maxlength="8"/>
+				<label >	Password:	</label> 
+				<input type="password" value="" name="password" id="passwordid"  maxlength="6"/>
+			
 				<br><br>
 				
 				<!-- <input type="button" name="login" id="loginbtnid" value="Login"  onclick="window.location.href='controlpanel.html';" style="float:left;width:380px;height:30px;" /> -->				
-				<input style="float:center;" type="button" name="login" value="Login" style="float:left;width:380px;height:30px;" onclick="test22()" >
+				<input type="button" name="login" value="Login" style="float:left;width:380px;height:30px;" onclick="test22()" >
 		
 		</div>
 		<div class="footer">
